@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.3.0/css/all.css">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+
+    <script defer src="/bootstrap/js/bootstrap.bundle.js"></script>
+
+    <title>Document</title>
+</head>
+<body class="d-flex flex-column vh-100">
+
+<header>
+    <%- include('./partials/header') %>
+</header>
+
+<main class="flex-grow-1 container">
+    <%- body %>
+</main>
+<footer class="bg-dark">
+    <%- include('./partials/footer') %>
+</footer>
+
+</body>
+</html>
