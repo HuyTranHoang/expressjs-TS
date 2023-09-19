@@ -1,4 +1,5 @@
 import express, { Express, Request, Response, NextFunction } from 'express'
+import session from 'express-session'
 import path from 'path'
 import expressLayouts from 'express-ejs-layouts'
 import methodOverride from 'method-override'
@@ -9,10 +10,25 @@ import initRouter from './routes'
 const app: Express = express()
 const port: number = 3000
 
-/// Body parser & http method override
+// Declare typescript
+declare module 'express-session' {
+    export interface SessionData {
+        createFlash: boolean,
+        updateFlash: boolean
+    }
+}
+
+// Body parser & http method override
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+
+// Session
+app.use(session({
+    secret: 'sss',
+    resave: false,
+    saveUninitialized: false
+}))
 
 // Ejs
 app.set('view engine', 'ejs')

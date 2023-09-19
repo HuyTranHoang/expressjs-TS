@@ -3,10 +3,18 @@ import Product from '../models/product'
 
 class ProductController {
     // * [GET] - /
-    static index = (_req: Request, res: Response) => {
+    static index = (req: Request, res: Response) => {
         const products: Product[] = Product.getAll()
         const title: string = 'Admin - Products'
-        res.render('admin/product/index', { products, title })
+
+        const createFlash: boolean = req.session.createFlash || false
+        const updateFlash: boolean = req.session.updateFlash || false
+
+        delete req.session.createFlash
+        delete req.session.updateFlash
+
+        res.render('admin/product/index', { products, title, createFlash, updateFlash })
+
     }
 
     // * [Get] - /admin/product/create
@@ -27,6 +35,8 @@ class ProductController {
             imageName
         )
         Product.add(product)
+
+        req.session.createFlash = true
 
         res.redirect('/admin/product')
     }
@@ -56,8 +66,9 @@ class ProductController {
             description,
             imageName
         )
-        console.log('update product >>>>', product)
         Product.update(product)
+
+        req.session.updateFlash = true
 
         res.redirect('/admin/product')
     }
