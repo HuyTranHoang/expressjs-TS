@@ -3,14 +3,17 @@ import Product from '../models/product'
 
 class ProductController {
     // * [GET] - /
-    static index = (req: Request, res: Response) => {
+    static index = (_req: Request, res: Response) => {
         const products: Product[] = Product.getAll()
-        res.render('admin/product/index', { products })
+        const title: string = 'Admin - Products'
+        res.render('admin/product/index', { products, title })
     }
 
     // * [Get] - /admin/product/create
-    static create = (req: Request, res: Response) =>
-        res.render('admin/product/add', { title: 'Add product' })
+    static create = (_req: Request, res: Response) => {
+        const title: string = 'Admin - Add Products'
+        res.render('admin/product/add', { title })
+    }
 
     // * [POST] - /admin/product
     static store = (req: Request, res: Response): void => {
@@ -29,24 +32,43 @@ class ProductController {
     }
 
     // * [Get] - /admin/product/:id/edit
-    static edit = async (req: Request, res: Response) => {
+    static edit = (req: Request, res: Response) => {
         try {
-            const id = parseInt(req.params.id)
-            const product: Product | undefined = await Product.findById(id)
-            if (product)
-                res.render('admin/product/edit', { product })
-            else
-                res.redirect('/admin/product')
+            const id: number = parseInt(req.params.id)
+            const product: Product | undefined = Product.findById(id)
+            const title: string = 'Admin - Edit Products'
+            if (product) res.render('admin/product/edit', { product, title })
+            else res.redirect('/admin/product')
         } catch (err) {
             console.error(`[Get] - /admin/product/:id/edit ==> `, err)
         }
     }
 
     // * [PUT] - /admin/product/:id
-    static update = (req: Request, res: Response) => {}
+    static update = (req: Request, res: Response) => {
+        let { name, price, description, currentImage } = req.body
 
-    // * [DELETE] - /admin/product/:id
-    static destroy = (req: Request, res: Response) => {}
+        let imageName: string = currentImage
+        if (req.file) imageName = req.file.filename
+        const product: Product = new Product(
+            name,
+            price,
+            description,
+            imageName
+        )
+        console.log('update product >>>>', product)
+        Product.update(product)
+
+        res.redirect('/admin/product')
+    }
+
+    // * [DELETE] - /admin/product/delete/:id
+    static destroy = (req: Request, res: Response) => {
+        const id: number = parseInt(req.params.id)
+        Product.remove(id)
+
+        res.redirect('/admin/product')
+    }
 }
 
 export default ProductController

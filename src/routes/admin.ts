@@ -1,9 +1,9 @@
-import express from 'express'
+import express, { Router } from 'express'
 import ProductController from '../controllers/productController'
 
 import upload from '../middleware/upload'
 
-const router = express.Router()
+const router: Router = express.Router()
 
 router.get('/product', ProductController.index)
 
@@ -13,7 +13,7 @@ router
 
 router
     .get('/product/:id/edit', ProductController.edit)
-    .put('/product/:id', ProductController.update)
+    .put('/product/:id', upload.single('image'), ProductController.update)
 
 router.delete('/product/:id', ProductController.destroy)
 

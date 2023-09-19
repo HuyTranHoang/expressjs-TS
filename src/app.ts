@@ -30,7 +30,7 @@ app.use(
 app.use('/public', express.static(path.join(__dirname, '../public')))
 
 // Middleware
-app.use((req: Request, res: Response, next: NextFunction) => {
+app.use((req: Request, res: Response, next: NextFunction): void => {
     res.locals.active = req.url
     next()
 })
@@ -38,6 +38,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // Init router
 initRouter(app)
 
-app.listen(port, () => {
+app.listen(port, (): void => {
     console.log(`Example app listening on port http://localhost:${port}`)
 })
