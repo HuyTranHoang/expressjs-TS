@@ -1,6 +1,7 @@
 import express, { Express, Request, Response, NextFunction } from 'express'
 import path from 'path'
 import expressLayouts from 'express-ejs-layouts'
+import methodOverride from 'method-override'
 
 // Import router
 import initRouter from './routes'
@@ -11,6 +12,7 @@ const port: number = 3000
 /// Body parser & http method override
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 // Ejs
 app.set('view engine', 'ejs')

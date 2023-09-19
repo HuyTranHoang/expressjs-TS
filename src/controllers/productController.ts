@@ -4,7 +4,7 @@ import Product from '../models/product'
 class ProductController {
     // * [GET] - /
     static index = (req: Request, res: Response) => {
-        const products = Product.getAll()
+        const products: Product[] = Product.getAll()
         res.render('admin/product/index', { products })
     }
 
@@ -14,17 +14,33 @@ class ProductController {
 
     // * [POST] - /admin/product
     static store = (req: Request, res: Response): void => {
-        let imageName = 'default.jpg'
+        let imageName: string = 'default.jpg'
         if (req.file) imageName = req.file.filename
         const { name, price, description } = req.body
-        const product: Product = new Product(name, price, description, imageName)
+        const product: Product = new Product(
+            name,
+            price,
+            description,
+            imageName
+        )
         Product.add(product)
 
-        res.redirect('/')
+        res.redirect('/admin/product')
     }
 
     // * [Get] - /admin/product/:id/edit
-    static edit = (req: Request, res: Response) => {}
+    static edit = async (req: Request, res: Response) => {
+        try {
+            const id = parseInt(req.params.id)
+            const product: Product | undefined = await Product.findById(id)
+            if (product)
+                res.render('admin/product/edit', { product })
+            else
+                res.redirect('/admin/product')
+        } catch (err) {
+            console.error(`[Get] - /admin/product/:id/edit ==> `, err)
+        }
+    }
 
     // * [PUT] - /admin/product/:id
     static update = (req: Request, res: Response) => {}

@@ -8,7 +8,12 @@ class Product {
     description: string
     image: string
 
-    constructor(name: string, price: number, description: string, image: string) {
+    constructor(
+        name: string,
+        price: number,
+        description: string,
+        image: string
+    ) {
         this.id = _id
         this.name = name
         this.price = price
@@ -16,14 +21,18 @@ class Product {
         this.image = image
     }
 
-    static getAll = () => {
+    static getAll = (): Product[] => {
         return products
     }
 
-    static add = (product: Product) => {
+    static add = (product: Product): void => {
         product.id = _id
         products.push(product)
         _id++
+    }
+
+    static findById = async (id: number) => {
+        return products.find((p: Product): boolean => p.id === id);
     }
 }
 
