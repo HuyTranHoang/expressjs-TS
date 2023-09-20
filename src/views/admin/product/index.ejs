@@ -1,3 +1,19 @@
+<% if(createFlash) { %>
+    <div class="position-relative" id="createFlash">
+        <div class="alert alert-success position-absolute start-50 translate-middle" role="alert">
+            <i class="fa-regular fa-check fa-fade"></i> Add new product successfully!
+        </div>
+    </div>
+<% } %>
+
+<% if(updateFlash) { %>
+    <div class="position-relative" id="updateFlash">
+        <div class="alert alert-success position-absolute start-50 translate-middle" role="alert">
+            <i class="fa-regular fa-check fa-fade"></i> Update product successfully!
+        </div>
+    </div>
+<% } %>
+
 <div class="row justify-content-center mt-3">
     <div class="col bg-dark-subtle p-3 rounded d-flex flex-column">
         <h1>My products</h1>
@@ -19,22 +35,21 @@
             </thead>
             <tbody>
             <% if (products.length > 0) { %>
-                <% products.forEach((product, index) => { %>
+                <% products.forEach((product, index)=> { %>
                     <tr>
                         <th scope="row"><%= index + 1 %></th>
                         <td><%= product.name %></td>
                         <td><%= product.price %></td>
                         <td><%= product.description %></td>
-                        <td><img src="/public/images/<%= product.image %>"
-                                 class="card-img-top" alt="..." style="width: 100px;"></td>
+                        <td><img src="/public/images/<%= product.image %>" class="card-img-top" alt="..."
+                                 style="width: 100px;"></td>
                         <td>
                             <div>
                                 <a href="/admin/product/<%= product.id %>/edit" class="link-warning me-3">
                                     <i class="fa-solid fa-pen"></i></a>
 
                                 <button type="button" class="link-danger bg-white border-0" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModalForm"
-                                        data-bs-id="<%= product.id %>">
+                                        data-bs-target="#deleteModalForm" data-bs-id="<%= product.id %>">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
@@ -70,6 +85,24 @@
 </div>
 
 <form id="formDelete" action="" method="POST"></form>
+
+<% if(createFlash) { %>
+    <script>
+        setTimeout(() => {
+            const createFlash = document.getElementById('createFlash')
+            createFlash.style.display = 'none'
+        }, 1500);
+    </script>
+<% } %>
+
+<% if(updateFlash) { %>
+    <script>
+        setTimeout(() => {
+            const updateFlash = document.getElementById('updateFlash')
+            updateFlash.style.display = 'none'
+        }, 1500);
+    </script>
+<% } %>
 
 <script>
     const deleteModal = document.getElementById('deleteModalForm')

@@ -1,3 +1,9 @@
+<div class="position-relative invisible" id="cartFlash">
+    <div class="alert alert-success position-absolute start-50 translate-middle" role="alert">
+        <i class="fa-regular fa-check fa-fade"></i> Add product to cart successfully!
+    </div>
+</div>
+
 <div class="row mt-3">
     <% if (products.length > 0) { %>
         <% for (product of products)  { %>
@@ -10,7 +16,7 @@
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk
                         of the card's content.</p>
                     <div class="d-flex justify-content-between align-items-center">
-                        <a href="#" class="btn btn-primary">Add to cart</a>
+                        <button data-bs-id="<%= product.id%>" class="btn btn-primary btn-add-to-cart">Add to cart</button>
                         <span class="card-text text-success fs-5"><%= product.price.toLocaleString('en-US') %>$</span>
                     </div>
                 </div>
@@ -21,3 +27,32 @@
         <h1>No product found</h1>
     <% } %>
 </div>
+
+
+<script>
+    $(function() {
+        const buttons = $('.btn-add-to-cart')
+        const cartFlash = $('#cartFlash')
+        buttons.on('click', (e) => {
+            // $(e.currentTarget).data('bs-id') với arrow hoặc
+            // $(this).data('bs-id') với function do this có context khác ở arrow
+            const productId = $(e.currentTarget).data('bs-id')
+            console.log('Button clicked with product ID: ' + productId)
+
+            $.ajax({
+                url: '/cart/',
+                method: 'POST',
+                data: { id: productId },
+                success: data => {
+                    cartFlash.removeClass('invisible')
+                    setTimeout(() => {
+                        cartFlash.addClass('invisible')
+                    }, 1500);
+                },
+                error: err => {
+                    console.log(err)
+                }
+            })
+        })
+    })
+</script>

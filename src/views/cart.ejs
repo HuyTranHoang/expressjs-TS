@@ -1,0 +1,66 @@
+<div class="row justify-content-center mt-3">
+    <div class="col bg-dark-subtle p-3 rounded d-flex flex-column">
+        <h1>My cart</h1>
+        <p>List all my products in cart</p>
+        <hr>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Image</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% if (carts.length > 0) { %>
+                <% carts.forEach((cart, index)=> { %>
+                    <tr>
+                        <th scope="row"><%= index + 1 %></th>
+                        <td><%= cart.product.name %></td>
+                        <td><%= cart.product.price %>$</td>
+                        <td><img src="/public/images/<%= cart.product.image %>" class="card-img-top" alt="..."
+                                 style="width: 100px;"></td>
+                        <td><%= cart.quantity %></td>
+                        <td><%= cart.product.price * cart.quantity %>$</td>
+                        <td>
+                            <button data-bs-id="<%= cart.id%>" class="btn btn-danger btn-remove-from-cart">Remove</button>
+                        </td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr>
+                    <td colspan="7" class="text-center">No product found in cart</td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+        const buttons = $('.btn-remove-from-cart')
+        buttons.on('click', function () {
+            const id = $(this).data('bs-id')
+            $.ajax({
+                url: `/cart/${id}`,
+                method: 'DELETE',
+                data: { id },
+                success: data => {
+                    window.location.href = '/cart'
+                },
+                error: err => {
+                    console.log(err)
+                }
+            })
+
+        })
+    })
+
+</script>

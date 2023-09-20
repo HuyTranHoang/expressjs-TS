@@ -13,8 +13,12 @@ class ProductController {
         delete req.session.createFlash
         delete req.session.updateFlash
 
-        res.render('admin/product/index', { products, title, createFlash, updateFlash })
-
+        res.render('admin/product/index', {
+            products,
+            title,
+            createFlash,
+            updateFlash,
+        })
     }
 
     // * [Get] - /admin/product/create
@@ -56,6 +60,7 @@ class ProductController {
 
     // * [PUT] - /admin/product/:id
     static update = (req: Request, res: Response) => {
+        const { id } = req.params
         let { name, price, description, currentImage } = req.body
 
         let imageName: string = currentImage
@@ -66,6 +71,7 @@ class ProductController {
             description,
             imageName
         )
+        product.id = parseInt(id)
         Product.update(product)
 
         req.session.updateFlash = true

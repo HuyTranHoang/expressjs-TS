@@ -21,6 +21,7 @@ class Product {
         this.image = image
     }
 
+
     static getAll = (): Product[] => {
         return products
     }
