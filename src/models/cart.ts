@@ -1,5 +1,7 @@
 import Product from './product'
+
 let _id: number = 0
+
 class CartItem {
     constructor(
         public id: number,
@@ -19,7 +21,6 @@ class Cart {
     }
 
     static addToCart = (product: Product, quantity: number = 1): void => {
-
         const existingItem: CartItem | undefined = cart.find(
             (item: CartItem): boolean => item.product.id === product.id
         )
@@ -55,10 +56,11 @@ class Cart {
             console.log('Update quantity >> Không tìm thấy sản phẩm')
         }
     }
+
+    static findById = (id: number): CartItem | undefined =>
+        cart.find((c: CartItem): boolean => c.id === id)
 }
 
 export default Cart
 
-export {
-    CartItem
-}
+export { CartItem }

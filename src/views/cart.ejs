@@ -19,16 +19,25 @@
             <tbody>
             <% if (carts.length > 0) { %>
                 <% carts.forEach((cart, index)=> { %>
-                    <tr>
+                    <tr data-bs-id="<%= cart.id %>">
                         <th scope="row"><%= index + 1 %></th>
                         <td><%= cart.product.name %></td>
                         <td><%= cart.product.price %>$</td>
                         <td><img src="/public/images/<%= cart.product.image %>" class="card-img-top" alt="..."
                                  style="width: 100px;"></td>
-                        <td><%= cart.quantity %></td>
-                        <td><%= cart.product.price * cart.quantity %>$</td>
                         <td>
-                            <button data-bs-id="<%= cart.id%>" class="btn btn-danger btn-remove-from-cart">Remove</button>
+                            <button class="btn btn-secondary btn-plus-cart rounded-5 me-2"><i
+                                        class="fa-light fa-plus"></i></button>
+                            <span><%= cart.quantity %></span>
+                            <button class="btn btn-secondary btn-minus-cart rounded-5 ms-2"><i
+                                        class="fa-light fa-minus"></i></button>
+                        </td>
+                        <td>
+                            <%= cart.product.price * cart.quantity %>$
+                            <% totalMoney += cart.product.price * cart.quantity %>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-remove-from-cart">Remove</button>
                         </td>
                     </tr>
                 <% }) %>
@@ -39,19 +48,24 @@
             <% } %>
             </tbody>
         </table>
+
+        <div class="d-flex justify-content-end align-items-center">
+            <h3>Total money: <%= totalMoney %>$</h3>
+            <button class="btn btn-primary ms-5">Check out</button>
+        </div>
     </div>
 </div>
 
 
 <script>
     $(function () {
-        const buttons = $('.btn-remove-from-cart')
-        buttons.on('click', function () {
-            const id = $(this).data('bs-id')
+        const removeButtons = $('.btn-remove-from-cart')
+        removeButtons.on('click', function () {
+            const id = $(this).closest('tr').data('bs-id')
             $.ajax({
                 url: `/cart/${id}`,
                 method: 'DELETE',
-                data: { id },
+                data: {id},
                 success: data => {
                     window.location.href = '/cart'
                 },
@@ -59,7 +73,38 @@
                     console.log(err)
                 }
             })
+        })
 
+        const plusButtons = $('.btn-plus-cart')
+        plusButtons.on('click', function () {
+            const id = $(this).closest('tr').data('bs-id')
+            $.ajax({
+                url: `/cart/plus/${id}`,
+                method: 'POST',
+                data: {id},
+                success: data => {
+                    window.location.href = '/cart'
+                },
+                error: err => {
+                    console.log(err)
+                }
+            })
+        })
+
+        const minusButtons = $('.btn-minus-cart')
+        minusButtons.on('click', function () {
+            const id = $(this).closest('tr').data('bs-id')
+            $.ajax({
+                url: `/cart/minus/${id}`,
+                method: 'POST',
+                data: {id},
+                success: data => {
+                    window.location.href = '/cart'
+                },
+                error: err => {
+                    console.log(err)
+                }
+            })
         })
     })
 

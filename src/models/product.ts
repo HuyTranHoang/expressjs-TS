@@ -21,7 +21,6 @@ class Product {
         this.image = image
     }
 
-
     static getAll = (): Product[] => {
         return products
     }
@@ -32,9 +31,8 @@ class Product {
         products.push(newProduct)
     }
 
-    static findById = (id: number) => {
-        return products.find((p: Product): boolean => p.id === id)
-    }
+    static findById = (id: number): Product | undefined =>
+        products.find((p: Product): boolean => p.id === id)
 
     static update = (product: Product) => {
         const index: number = products.findIndex(
