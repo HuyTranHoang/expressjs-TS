@@ -3,8 +3,8 @@ import { Request, Response } from 'express'
 
 class HomeController {
     // [GET] - /
-    static index = (req: Request, res: Response) => {
-        const products: Product[] = Product.getAll()
+    static index = async (req: Request, res: Response) => {
+        const products = await Product.findAll()
         const title: string = 'Home page'
         res.render('index', { products, title })
     }

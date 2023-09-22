@@ -3,6 +3,8 @@ import session from 'express-session'
 import path from 'path'
 import expressLayouts from 'express-ejs-layouts'
 import methodOverride from 'method-override'
+import sass from 'node-sass-middleware'
+import sequelize from './utils/dbSequelize'
 
 // Import router
 import initRouter from './routes'
@@ -30,6 +32,18 @@ app.use(session({
     saveUninitialized: false
 }))
 
+
+// SASS
+app.use(
+    sass({
+        src: __dirname + '/scss',    // Input SASS files
+        dest: path.join(__dirname, '../public/css'), // Output CSS
+        debug: false,       
+        prefix:  '/public/css',
+        outputStyle: 'compressed'
+    })
+)
+
 // Ejs
 app.set('view engine', 'ejs')
 app.set('views', 'src/views')
@@ -39,10 +53,6 @@ app.use(expressLayouts)
 app.set('layout extractScripts', true)
 
 // Static file
-app.use(
-    '/bootstrap',
-    express.static(path.join(__dirname, '../node_modules/bootstrap/dist'))
-)
 app.use('/public', express.static(path.join(__dirname, '../public')))
 
 // Middleware
@@ -54,6 +64,12 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
 // Init router
 initRouter(app)
 
-app.listen(port, (): void => {
-    console.log(`Example app listening on port http://localhost:${port}`)
-})
+
+sequelize.sync()
+    .then(() => {
+        app.listen(port, (): void => {
+            console.log(`Example app listening on port http://localhost:${port}`)
+        })    
+    })
+    .catch(err => console.log(err))
+

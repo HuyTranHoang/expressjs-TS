@@ -6,9 +6,9 @@
 
         <form action="/admin/product" method="POST" enctype="multipart/form-data" id="addProductForm">
             <div class="mb-3">
-                <label class="form-label text-dark" for="name">Name</label>
-                <input class="form-control" type="text" id="name" name="name"/>
-                <span class="text-danger label-error invisible" id="nameError">Error</span>
+                <label class="form-label text-dark" for="title">Title</label>
+                <input class="form-control" type="text" id="title" name="title"/>
+                <span class="text-danger label-error invisible" id="titleError">Error</span>
             </div>
 
             <div class="mb-3">
@@ -32,8 +32,8 @@
 </div>
 
 <script>
-    const nameInput = document.getElementById('name')
-    const nameError = document.getElementById('nameError')
+    const titleInput = document.getElementById('title')
+    const titleError = document.getElementById('titleError')
 
     const priceInput = document.getElementById('price')
     const priceError = document.getElementById('priceError')
@@ -55,8 +55,8 @@
         const description = descriptionInput.value
 
         if(name.length === 0 || name === undefined) {
-            nameError.innerText = `Name can't be empty`
-            nameError.classList.remove('invisible')
+            titleError.innerText = `Title can't be empty`
+            titleError.classList.remove('invisible')
             flag ++
         }
 

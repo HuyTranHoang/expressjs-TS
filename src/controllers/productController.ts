@@ -3,8 +3,9 @@ import Product from '../models/product'
 
 class ProductController {
     // * [GET] - /
-    static index = (req: Request, res: Response) => {
-        const products: Product[] = Product.getAll()
+    static index = async (req: Request, res: Response) => {
+        const products = await Product.findAll()
+
         const title: string = 'Admin - Products'
 
         const createFlash: boolean = req.session.createFlash || false
@@ -28,17 +29,17 @@ class ProductController {
     }
 
     // * [POST] - /admin/product
-    static store = (req: Request, res: Response): void => {
-        let imageName: string = 'default.jpg'
-        if (req.file) imageName = req.file.filename
-        const { name, price, description } = req.body
-        const product: Product = new Product(
-            name,
+    static store = async (req: Request, res: Response) => {
+        let imageUrl
+        if (req.file) imageUrl = req.file.filename
+        const { title, price, description } = req.body
+
+        await Product.create({
+            title,
             price,
+            imageUrl,
             description,
-            imageName
-        )
-        Product.add(product)
+        })
 
         req.session.createFlash = true
 
@@ -46,11 +47,12 @@ class ProductController {
     }
 
     // * [Get] - /admin/product/:id/edit
-    static edit = (req: Request, res: Response) => {
+    static edit = async (req: Request, res: Response) => {
         try {
             const id: number = parseInt(req.params.id)
-            const product: Product | undefined = Product.findById(id)
+            const product = await Product.findByPk(id)
             const title: string = 'Admin - Edit Products'
+
             if (product) res.render('admin/product/edit', { product, title })
             else res.redirect('/admin/product')
         } catch (err) {
@@ -59,20 +61,26 @@ class ProductController {
     }
 
     // * [PUT] - /admin/product/:id
-    static update = (req: Request, res: Response) => {
-        const { id } = req.params
-        let { name, price, description, currentImage } = req.body
+    static update = async (req: Request, res: Response) => {
+        const id: number = parseInt(req.params.id)
+        let { title, price, description, currentImage } = req.body
 
         let imageName: string = currentImage
         if (req.file) imageName = req.file.filename
-        const product: Product = new Product(
-            name,
-            price,
-            description,
-            imageName
+
+        await Product.update(
+            {
+                title,
+                price,
+                description,
+                imageName,
+            },
+            {
+                where: {
+                    id
+                },
+            }
         )
-        product.id = parseInt(id)
-        Product.update(product)
 
         req.session.updateFlash = true
 
@@ -80,9 +88,10 @@ class ProductController {
     }
 
     // * [DELETE] - /admin/product/delete/:id
-    static destroy = (req: Request, res: Response) => {
+    static destroy = async (req: Request, res: Response) => {
         const id: number = parseInt(req.params.id)
-        Product.remove(id)
+        const product = await Product.findByPk(id)
+        await product?.destroy()
 
         res.redirect('/admin/product')
     }

@@ -7,9 +7,9 @@
         <form action="/admin/product/<%= product.id %>?_method=PUT" method="POST" enctype="multipart/form-data"
               id="editProductForm">
             <div class="mb-3">
-                <label class="form-label text-dark" for="name">Name</label>
-                <input class="form-control" type="text" id="name" name="name" value="<%= product.name %>"/>
-                <span class="text-danger label-error invisible" id="nameError">Error</span>
+                <label class="form-label text-dark" for="title">Title</label>
+                <input class="form-control" type="text" id="title" name="title" value="<%= product.title %>"/>
+                <span class="text-danger label-error invisible" id="titleError">Error</span>
             </div>
 
             <div class="mb-3">
@@ -28,7 +28,7 @@
 
             <div class="mb-3 d-flex flex-column">
                 <label class="form-label text-dark" for="image">Image</label>
-                <img src="/public/images/<%= product.image %>" style="width: 150px" alt="...">
+                <img src="/public/images/<%= product.imageUrl %>" style="width: 150px" alt="...">
                 <input type="hidden" name="currentImage" value="<%= product.image %>">
                 <input class="form-control mt-3" type="file" id="image" name="image">
             </div>
