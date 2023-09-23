@@ -66,7 +66,7 @@ initRouter(app)
 
 sequelize.sync({ force: true })
     .then(() => {
-        Category.bulkCreate([{ name: 'Java' }, { name: 'C Sharp' }])
+        return Category.bulkCreate([{ name: 'Java' }, { name: 'C Sharp' }])
     })
     .then(() => {
         app.listen(port);

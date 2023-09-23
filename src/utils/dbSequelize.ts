@@ -5,7 +5,8 @@ import productModel from '../models/product'
 
 const sequelize: Sequelize = new Sequelize('c2202_nodejs', 'root', '', {
     host: 'localhost',
-    dialect: 'mysql'
+    dialect: 'mysql',
+    logging: false
 })
 
 categoryModel(sequelize)

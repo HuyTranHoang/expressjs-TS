@@ -54,13 +54,13 @@
     const form = document.getElementById('addProductForm')
 
     form.addEventListener('submit', (e) => {
-        nameError.classList.add('invisible')
+        titleError.classList.add('invisible')
         priceError.classList.add('invisible')
         descriptionError.classList.add('invisible')
 
         let flag = 0
 
-        const name = nameInput.value
+        const name = titleInput.value
         const price = priceInput.value
         const description = descriptionInput.value
 
