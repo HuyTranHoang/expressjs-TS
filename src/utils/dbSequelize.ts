@@ -1,21 +1,21 @@
-import { Sequelize, DataTypes } from 'sequelize'
+import { Sequelize, DataTypes, Model } from 'sequelize'
 
-const sequelize = new Sequelize('c2202_nodejs', 'root', '', {
+import categoryModel from '../models/category'
+import productModel from '../models/product'
+
+const sequelize: Sequelize = new Sequelize('c2202_nodejs', 'root', '', {
     host: 'localhost',
     dialect: 'mysql',
 })
 
-sequelize
-    .authenticate()
-    .then(() => {
-        console.log('Connection has been established successfully.')
-    })
-    .catch((error) => {
-        console.error('Unable to connect to the database: ', error)
-    })
+categoryModel(sequelize)
+productModel(sequelize)
+
+const {Category, Product}  = sequelize.models
+
+Category.hasMany(Product)
+Product.belongsTo(Category)
 
 export default sequelize
 
-export {
-    DataTypes
-}
+export { DataTypes, Model, Product, Category}

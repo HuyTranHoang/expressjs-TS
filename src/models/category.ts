@@ -1,7 +1,7 @@
 import {DataTypes, Sequelize} from 'sequelize'
 
 export default (sequelize: Sequelize) => sequelize.define(
-    'Product',
+    'Category',
     {
         id: {
             type: DataTypes.INTEGER,
@@ -9,19 +9,9 @@ export default (sequelize: Sequelize) => sequelize.define(
             allowNull: false,
             primaryKey: true,
         },
-        title: {
+        name: {
             type: DataTypes.STRING,
             allowNull: false,
-        },
-        price: {
-            type: DataTypes.DECIMAL(13, 2),
-            allowNull: false,
-        },
-        imageUrl: {
-            type: DataTypes.STRING,
-            defaultValue: 'default.jpg',
-            allowNull: false,
-        },
-        description: DataTypes.STRING,
+        }
     }
 )

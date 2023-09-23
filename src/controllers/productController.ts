@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import Product from '../models/product'
+import { Product } from '../utils/dbSequelize'
 
 class ProductController {
     // * [GET] - /
@@ -77,7 +77,7 @@ class ProductController {
             },
             {
                 where: {
-                    id
+                    id,
                 },
             }
         )

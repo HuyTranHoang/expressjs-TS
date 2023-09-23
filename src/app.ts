@@ -64,12 +64,9 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
 // Init router
 initRouter(app)
 
-
-sequelize.sync()
+sequelize.sync({ force: true })
     .then(() => {
-        app.listen(port, (): void => {
-            console.log(`Example app listening on port http://localhost:${port}`)
-        })    
+        app.listen(port);
+        console.log(`Example app listening on port http://localhost:${port}`);
     })
     .catch(err => console.log(err))
-

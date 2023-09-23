@@ -1,4 +1,4 @@
-import Product from '../models/product'
+import { Product } from '../utils/dbSequelize'
 import { Request, Response } from 'express'
 
 class HomeController {
