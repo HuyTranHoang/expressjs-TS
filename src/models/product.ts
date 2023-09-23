@@ -1,27 +1,26 @@
-import sequelize from '../utils/dbSequelize'
-import Sequelize from 'sequelize'
+import sequelize, { DataTypes } from '../utils/dbSequelize'
 
-const Product = sequelize.define('products', {
+const Product = sequelize.define('product', {
     id: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
     },
     title: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     price: {
-        type: Sequelize.DECIMAL(13,2),
-        allowNull: false
+        type: DataTypes.DECIMAL(13, 2),
+        allowNull: false,
     },
     imageUrl: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         defaultValue: 'default.jpg',
-        allowNull: false
+        allowNull: false,
     },
-    description: Sequelize.STRING
+    description: DataTypes.STRING,
 })
 
 export default Product

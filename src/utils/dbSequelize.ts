@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize'
+import { Sequelize, DataTypes } from 'sequelize'
 
 const sequelize = new Sequelize('c2202_nodejs', 'root', '', {
     host: 'localhost',
@@ -15,3 +15,7 @@ sequelize
     })
 
 export default sequelize
+
+export {
+    DataTypes
+}
