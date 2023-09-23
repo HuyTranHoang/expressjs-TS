@@ -1,11 +1,10 @@
 import { Request, Response } from 'express'
-import { Product } from '../utils/dbSequelize'
+import { Category, Product } from '../utils/dbSequelize'
 
 class ProductController {
     // * [GET] - /
     static index = async (req: Request, res: Response) => {
         const products = await Product.findAll()
-
         const title: string = 'Admin - Products'
 
         const createFlash: boolean = req.session.createFlash || false
@@ -23,22 +22,25 @@ class ProductController {
     }
 
     // * [Get] - /admin/product/create
-    static create = (_req: Request, res: Response) => {
+    static create = async (_req: Request, res: Response) => {
         const title: string = 'Admin - Add Products'
-        res.render('admin/product/add', { title })
+        const categories = await Category.findAll()
+
+        res.render('admin/product/add', { title, categories })
     }
 
     // * [POST] - /admin/product
     static store = async (req: Request, res: Response) => {
         let imageUrl
         if (req.file) imageUrl = req.file.filename
-        const { title, price, description } = req.body
+        const { title, price, description, categoryId } = req.body
 
         await Product.create({
             title,
             price,
             imageUrl,
             description,
+            categoryId,
         })
 
         req.session.createFlash = true

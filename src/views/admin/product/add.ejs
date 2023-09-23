@@ -7,13 +7,13 @@
         <form action="/admin/product" method="POST" enctype="multipart/form-data" id="addProductForm">
             <div class="mb-3">
                 <label class="form-label text-dark" for="title">Title</label>
-                <input class="form-control" type="text" id="title" name="title"/>
+                <input class="form-control" type="text" id="title" name="title" />
                 <span class="text-danger label-error invisible" id="titleError">Error</span>
             </div>
 
             <div class="mb-3">
                 <label class="form-label text-dark" for="price">Price</label>
-                <input class="form-control" type="number" id="price" name="price"/>
+                <input class="form-control" type="number" id="price" name="price" />
                 <span class="text-danger label-error invisible" id="priceError">Error</span>
             </div>
 
@@ -21,6 +21,16 @@
                 <label class="form-label text-dark" for="description">Price</label>
                 <textarea class="form-control" id="description" name="description"></textarea>
                 <span class="text-danger label-error invisible" id="descriptionError">Error</span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-dark" for="categoryId">Category</label>
+                <select class="form-select" id="categoryId" name="categoryId" aria-label="Category label select">
+                    <option selected>Open this select menu</option>
+                    <% categories.forEach(category => { %>
+                        <option value="<%= category.id %>"><%= category.name %></option>
+                    <% }) %>
+                </select>
             </div>
 
             <label class="form-label text-dark" for="image">Image</label>
@@ -54,25 +64,25 @@
         const price = priceInput.value
         const description = descriptionInput.value
 
-        if(name.length === 0 || name === undefined) {
+        if (name.length === 0 || name === undefined) {
             titleError.innerText = `Title can't be empty`
             titleError.classList.remove('invisible')
-            flag ++
+            flag++
         }
 
-        if(price.length === 0 || price === undefined) {
+        if (price.length === 0 || price === undefined) {
             priceError.innerText = `Price can't be empty`
             priceError.classList.remove('invisible')
-            flag ++
+            flag++
         }
 
-        if(description.length === 0 || description === undefined) {
+        if (description.length === 0 || description === undefined) {
             descriptionError.innerText = `Description can't be empty`
             descriptionError.classList.remove('invisible')
-            flag ++
+            flag++
         }
 
-        if(flag > 0)
+        if (flag > 0)
             e.preventDefault()
 
     })

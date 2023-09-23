@@ -4,7 +4,7 @@ import path from 'path'
 import expressLayouts from 'express-ejs-layouts'
 import methodOverride from 'method-override'
 import sass from 'node-sass-middleware'
-import sequelize from './utils/dbSequelize'
+import sequelize, {Category} from './utils/dbSequelize'
 
 // Import router
 import initRouter from './routes'
@@ -65,6 +65,9 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
 initRouter(app)
 
 sequelize.sync({ force: true })
+    .then(() => {
+        Category.bulkCreate([{ name: 'Java' }, { name: 'C Sharp' }])
+    })
     .then(() => {
         app.listen(port);
         console.log(`Example app listening on port http://localhost:${port}`);

@@ -2,8 +2,8 @@ import homeRouter from './home'
 import adminRouter from './admin'
 import cartRouter from './cart'
 
-import ExceptionController from "../controllers/exceptionController";
-import {Express} from "express";
+import ExceptionController from '../controllers/exceptionController'
+import { Express } from 'express'
 
 function route(app: Express): void {
     app.use(homeRouter)

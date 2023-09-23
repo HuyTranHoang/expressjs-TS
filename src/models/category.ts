@@ -1,8 +1,7 @@
-import {DataTypes, Sequelize} from 'sequelize'
+import { DataTypes, Sequelize } from 'sequelize'
 
-export default (sequelize: Sequelize) => sequelize.define(
-    'Category',
-    {
+const Category = (sequelize: Sequelize) =>
+    sequelize.define('Category', {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -12,6 +11,8 @@ export default (sequelize: Sequelize) => sequelize.define(
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-        }
-    }
-)
+        },
+    })
+
+
+export default Category
