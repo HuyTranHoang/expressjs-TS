@@ -4,7 +4,7 @@
         <p>Current product</p>
         <hr>
 
-        <form action="/admin/product/<%= product.id %>?_method=PUT" method="POST" enctype="multipart/form-data"
+        <form action="/admin/product/<%= product._id %>?_method=PUT" method="POST" enctype="multipart/form-data"
               id="editProductForm">
             <div class="mb-3">
                 <label class="form-label text-dark" for="title">Title</label>
@@ -19,7 +19,7 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label text-dark" for="description">Price</label>
+                <label class="form-label text-dark" for="description">Description</label>
                 <textarea class="form-control" id="description"
                           name="description"><%= product.description %></textarea>
                 <span class="text-danger label-error invisible" id="descriptionError">Error</span>
@@ -29,7 +29,7 @@
             <div class="mb-3 d-flex flex-column">
                 <label class="form-label text-dark" for="image">Image</label>
                 <img src="/public/images/<%= product.imageUrl %>" style="width: 150px" alt="...">
-                <input type="hidden" name="currentImage" value="<%= product.image %>">
+                <input type="hidden" name="currentImage" value="<%= product.imageUrl %>">
                 <input class="form-control mt-3" type="file" id="image" name="image">
             </div>
 

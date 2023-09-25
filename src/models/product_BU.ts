@@ -35,7 +35,7 @@ class Product {
                 title,
                 price,
                 description,
-                imageUrl,
+                imageUrl
             ])
             return rows
         } catch (err) {
@@ -66,7 +66,7 @@ class Product {
                 price,
                 description,
                 imageUrl,
-                id,
+                id
             ])
             return rows
         } catch (err) {

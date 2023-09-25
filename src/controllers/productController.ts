@@ -1,47 +1,43 @@
 import { Request, Response } from 'express'
-import { Category, Product } from '../utils/dbSequelize'
+import Product from '../models/product_mongo'
 
 class ProductController {
     // * [GET] - /
     static index = async (req: Request, res: Response) => {
-        const products = await Product.findAll()
+        const products = await Product.getAll()
         const title: string = 'Admin - Products'
 
         const createFlash: boolean = req.session.createFlash || false
         const updateFlash: boolean = req.session.updateFlash || false
+        const deleteFlash: boolean = req.session.deleteFlash || false
 
         delete req.session.createFlash
         delete req.session.updateFlash
+        delete req.session.deleteFlash
 
         res.render('admin/product/index', {
             products,
             title,
             createFlash,
             updateFlash,
+            deleteFlash
         })
     }
 
     // * [Get] - /admin/product/create
     static create = async (_req: Request, res: Response) => {
         const title: string = 'Admin - Add Products'
-        const categories = await Category.findAll()
-
-        res.render('admin/product/add', { title, categories })
+        res.render('admin/product/add', { title })
     }
 
     // * [POST] - /admin/product
     static store = async (req: Request, res: Response) => {
-        let imageUrl
+        let imageUrl = 'default.jpg'
         if (req.file) imageUrl = req.file.filename
-        const { title, price, description, categoryId } = req.body
+        const { title, price, description } = req.body
 
-        await Product.create({
-            title,
-            price,
-            imageUrl,
-            description,
-            categoryId,
-        })
+        const product = new Product(title, price, description, imageUrl)
+        Product.add(product)
 
         req.session.createFlash = true
 
@@ -51,8 +47,8 @@ class ProductController {
     // * [Get] - /admin/product/:id/edit
     static edit = async (req: Request, res: Response) => {
         try {
-            const id: number = parseInt(req.params.id)
-            const product = await Product.findByPk(id)
+            const id: string = req.params.id
+            const product = await Product.findById(id)
             const title: string = 'Admin - Edit Products'
 
             if (product) res.render('admin/product/edit', { product, title })
@@ -64,25 +60,17 @@ class ProductController {
 
     // * [PUT] - /admin/product/:id
     static update = async (req: Request, res: Response) => {
-        const id: number = parseInt(req.params.id)
+        const id: string = req.params.id
         let { title, price, description, currentImage } = req.body
 
-        let imageName: string = currentImage
-        if (req.file) imageName = req.file.filename
+        console.log(currentImage)
 
-        await Product.update(
-            {
-                title,
-                price,
-                description,
-                imageName,
-            },
-            {
-                where: {
-                    id,
-                },
-            }
-        )
+        let imageUrl: string = currentImage
+        if (req.file) imageUrl = req.file.filename
+
+        const product = new Product(title, price, description, imageUrl)
+
+        await Product.update(id, product)
 
         req.session.updateFlash = true
 
@@ -91,9 +79,12 @@ class ProductController {
 
     // * [DELETE] - /admin/product/delete/:id
     static destroy = async (req: Request, res: Response) => {
-        const id: number = parseInt(req.params.id)
-        const product = await Product.findByPk(id)
-        await product?.destroy()
+        const id: string = req.params.id
+        const result = await Product.delete(id)
+
+        if (result && result.deletedCount) {
+            req.session.deleteFlash = true
+        }
 
         res.redirect('/admin/product')
     }

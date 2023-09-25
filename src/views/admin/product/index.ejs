@@ -14,6 +14,15 @@
     </div>
 <% } %>
 
+<% if(deleteFlash) { %>
+    <div class="position-relative" id="updateFlash">
+        <div class="alert alert-success position-absolute start-50 translate-middle" role="alert">
+            <i class="fa-regular fa-check fa-fade"></i> Delete product successfully!
+        </div>
+    </div>
+<% } %>
+
+
 <div class="row justify-content-center mt-3">
     <div class="col bg-dark-subtle p-3 rounded d-flex flex-column">
         <h1>My products</h1>
@@ -45,11 +54,11 @@
                                  style="width: 100px;"></td>
                         <td>
                             <div>
-                                <a href="/admin/product/<%= product.id %>/edit" class="link-warning me-3">
+                                <a href="/admin/product/<%= product._id %>/edit" class="link-warning me-3">
                                     <i class="fa-solid fa-pen"></i></a>
 
                                 <button type="button" class="link-danger bg-white border-0" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModalForm" data-bs-id="<%= product.id %>">
+                                        data-bs-target="#deleteModalForm" data-bs-id="<%= product._id %>">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
@@ -99,7 +108,16 @@
     <script>
         setTimeout(() => {
             const updateFlash = document.getElementById('updateFlash')
-            updateFlash.style.display = 'none'
+            updateFlash.style.display = 'none'  
+        }, 1500);
+    </script>
+<% } %>
+
+<% if(deleteFlash) { %>
+    <script>
+        setTimeout(() => {
+            const deleteFlash = document.getElementById('deleteFlash')
+            deleteFlash.style.display = 'none'
         }, 1500);
     </script>
 <% } %>

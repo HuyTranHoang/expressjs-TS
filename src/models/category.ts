@@ -6,13 +6,12 @@ const Category = (sequelize: Sequelize) =>
             type: DataTypes.INTEGER,
             autoIncrement: true,
             allowNull: false,
-            primaryKey: true,
+            primaryKey: true
         },
         name: {
             type: DataTypes.STRING,
-            allowNull: false,
-        },
+            allowNull: false
+        }
     })
-
 
 export default Category

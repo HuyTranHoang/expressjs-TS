@@ -4,7 +4,8 @@ import path from 'path'
 import expressLayouts from 'express-ejs-layouts'
 import methodOverride from 'method-override'
 import sass from 'node-sass-middleware'
-import sequelize, {Category} from './utils/dbSequelize'
+import sequelize, { Category } from './utils/dbSequelize'
+import { mongoConnect } from './utils/dbMongo'
 
 // Import router
 import initRouter from './routes'
@@ -15,8 +16,9 @@ const port: number = 3000
 // Declare typescript
 declare module 'express-session' {
     export interface SessionData {
-        createFlash: boolean,
+        createFlash: boolean
         updateFlash: boolean
+        deleteFlash: boolean
     }
 }
 
@@ -26,20 +28,21 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
 // Session
-app.use(session({
-    secret: 'sss',
-    resave: false,
-    saveUninitialized: false
-}))
-
+app.use(
+    session({
+        secret: 'sss',
+        resave: false,
+        saveUninitialized: false
+    })
+)
 
 // SASS
 app.use(
     sass({
-        src: __dirname + '/scss',    // Input SASS files
+        src: __dirname + '/scss', // Input SASS files
         dest: path.join(__dirname, '../public/css'), // Output CSS
-        debug: false,       
-        prefix:  '/public/css',
+        debug: false,
+        prefix: '/public/css',
         outputStyle: 'compressed'
     })
 )
@@ -64,12 +67,18 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
 // Init router
 initRouter(app)
 
-sequelize.sync({ force: true })
-    .then(() => {
-        return Category.bulkCreate([{ name: 'Java' }, { name: 'C Sharp' }])
-    })
-    .then(() => {
-        app.listen(port);
-        console.log(`Example app listening on port http://localhost:${port}`);
-    })
-    .catch(err => console.log(err))
+// sequelize
+//     .sync({ force: true })
+//     .then(() => {
+//         return Category.bulkCreate([{ name: 'Java' }, { name: 'C Sharp' }])
+//     })
+//     .then(() => {
+//         app.listen(port)
+//         console.log(`Example app listening on port http://localhost:${port}`)
+//     })
+//     .catch((err) => console.log(err))
+
+mongoConnect(() => {
+    app.listen(port)
+    console.log(`Example app listening on port http://localhost:${port}`)
+})
