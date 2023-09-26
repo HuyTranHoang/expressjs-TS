@@ -7,12 +7,7 @@ class Product {
         public price: number,
         public description: string,
         public imageUrl: string
-    ) {
-        this.title = title
-        this.price = price
-        this.description = description
-        this.imageUrl = imageUrl
-    }
+    ) {}
 
     static getAll = async () => {
         try {
@@ -46,13 +41,9 @@ class Product {
 
     static update = async (id: string, product: Product) => {
         try {
-            const { title, price, description, imageUrl } = product
             const products: Collection | undefined = collections.products
             const filter = { _id: new ObjectId(id) }
-            const updateProduct = {
-                $set: { title, price, description, imageUrl }
-            }
-            await products?.updateOne(filter, updateProduct)
+            await products?.updateOne(filter, { $set: product })
         } catch (error) {
             console.log(error)
         }

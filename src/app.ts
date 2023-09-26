@@ -3,12 +3,11 @@ import session from 'express-session'
 import path from 'path'
 import expressLayouts from 'express-ejs-layouts'
 import methodOverride from 'method-override'
-import sass from 'node-sass-middleware'
 import sequelize, { Category } from './utils/dbSequelize'
 import { mongoConnect } from './utils/dbMongo'
 
 // Import router
-import initRouter from './routes'
+import initRouter from './routes/index'
 
 const app: Express = express()
 const port: number = 3000
@@ -33,17 +32,6 @@ app.use(
         secret: 'sss',
         resave: false,
         saveUninitialized: false
-    })
-)
-
-// SASS
-app.use(
-    sass({
-        src: __dirname + '/scss', // Input SASS files
-        dest: path.join(__dirname, '../public/css'), // Output CSS
-        debug: false,
-        prefix: '/public/css',
-        outputStyle: 'compressed'
     })
 )
 
@@ -78,7 +66,7 @@ initRouter(app)
 //     })
 //     .catch((err) => console.log(err))
 
-mongoConnect(() => {
+mongoConnect().then(() => {
     app.listen(port)
     console.log(`Example app listening on port http://localhost:${port}`)
 })

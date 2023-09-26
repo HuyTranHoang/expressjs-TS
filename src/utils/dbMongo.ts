@@ -1,4 +1,4 @@
-import { Collection, MongoClient, ServerApiVersion, Db } from 'mongodb'
+import { Collection, Db, MongoClient, ServerApiVersion } from 'mongodb'
 
 const uri: string =
     'mongodb+srv://huyth:Rrh7QlDbA5JrIiNx@huyth.myi7vyd.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp'
@@ -16,16 +16,13 @@ const client = new MongoClient(uri, {
     }
 })
 
-async function mongoConnect(callback: any) {
+async function mongoConnect() {
     try {
         await client.connect()
         mongoConnectPool = client.db(dbName)
         console.log('MongoDB connected')
 
-        const productsCollection: Collection = mongoConnectPool.collection('products')
-        collections.products = productsCollection
-
-        callback()
+        collections.products = mongoConnectPool.collection('products')
     } catch (err) {
         console.log(err)
     }
