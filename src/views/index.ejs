@@ -1,5 +1,5 @@
 <div class="position-relative invisible" id="cartFlash">
-    <div class="alert alert-success position-absolute start-50 translate-middle" role="alert">
+    <div class="alert alert-success position-absolute start-50 translate-middle z-1" role="alert">
         <i class="fa-regular fa-check fa-fade"></i> Add product to cart successfully!
     </div>
 </div>
@@ -47,7 +47,7 @@
                     cartFlash.removeClass('invisible')
                     setTimeout(() => {
                         cartFlash.addClass('invisible')
-                    }, 1500);
+                    }, 2500);
                 },
                 error: err => {
                     console.log(err)

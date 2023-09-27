@@ -61,9 +61,7 @@ class ProductController {
     // * [PUT] - /admin/product/:id
     static update = async (req: Request, res: Response) => {
         const id: string = req.params.id
-        let { title, price, description, currentImage } = req.body
-
-        console.log(currentImage)
+        const { title, price, description, currentImage } = req.body
 
         let imageUrl: string = currentImage
         if (req.file) imageUrl = req.file.filename

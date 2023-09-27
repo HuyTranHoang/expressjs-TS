@@ -5,4 +5,6 @@ const router = express.Router()
 
 router.get('/', HomeController.index)
 
+router.post('/cart', HomeController.addToCart)
+
 export default router

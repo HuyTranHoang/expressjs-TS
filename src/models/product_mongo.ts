@@ -1,8 +1,9 @@
-import { getDb, collections } from '../utils/dbMongo'
+import { collections } from '../utils/dbMongo'
 import { Collection, ObjectId } from 'mongodb'
 
 class Product {
     constructor(
+        public _id: ObjectId,
         public title: string,
         public price: number,
         public description: string,

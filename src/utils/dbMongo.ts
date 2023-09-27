@@ -5,7 +5,7 @@ const uri: string =
 const dbName = 'c2202_nodejs'
 let mongoConnectPool: Db
 
-const collections: { products?: Collection } = {}
+const collections: { products?: Collection, users?: Collection } = {}
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -23,6 +23,7 @@ async function mongoConnect() {
         console.log('MongoDB connected')
 
         collections.products = mongoConnectPool.collection('products')
+        collections.users = mongoConnectPool.collection('users')
     } catch (err) {
         console.log(err)
     }

@@ -8,6 +8,7 @@ import { mongoConnect } from './utils/dbMongo'
 
 // Import router
 import initRouter from './routes/index'
+import User from './models/user'
 
 const app: Express = express()
 const port: number = 3000
@@ -50,6 +51,16 @@ app.use('/public', express.static(path.join(__dirname, '../public')))
 app.use((req: Request, res: Response, next: NextFunction): void => {
     res.locals.active = req.url
     next()
+})
+
+app.use((req: Request, res: Response, next: NextFunction): void => {
+    User.findById('6514294065b7b9520e63aa59')
+        .then((result) => {
+            const { _id, username, email, cart } = result
+            req.user = new User(_id, username, email, cart)
+            next()
+        })
+        .catch((err) => console.log('error', err))
 })
 
 // Init router
